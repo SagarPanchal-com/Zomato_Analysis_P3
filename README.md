@@ -8,7 +8,7 @@
 
 This project demonstrates the implementation of a Library Management System using SQL. It includes creating and managing tables, performing CRUD operations, and executing advanced SQL queries. The goal is to showcase skills in database design, manipulation, and querying.
 
-![Library_project](https://github.com/SagarPanchal-com/Library_Management_P2/blob/main/library.jpg)
+![Library_project](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato_Logo.jpg)
 
 ## Objectives
 
@@ -20,7 +20,7 @@ This project demonstrates the implementation of a Library Management System usin
 ## Project Structure
 
 ### 1. Database Setup
-![ERD](https://github.com/SagarPanchal-com/Library_Management_P2/blob/main/Library_ERD.png)
+![ERD](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato_ERD.png)
 
 - **Database Creation**: Created a database named `Project_P3`.
 - **Table Creation**: Created tables for branches, employees, members, books, issued status, and return status. Each table includes relevant columns and relationships.
