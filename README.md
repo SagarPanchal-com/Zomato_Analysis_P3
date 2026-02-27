@@ -107,8 +107,6 @@ foreign key (rider_id)
 references Riders(rider_id);
 ```
 
-## Data Import
-
 ## Data Cleaning and Handling Null Values
 Before performing analysis, I ensured that the data was clean and free from null values where necessary. For instance:
 ```sql
@@ -166,9 +164,7 @@ group by 1,2
 order by 3 desc;
 ```
 
-**Task 3: Order Value Analysis**
--- Question: Find the average order value per customer who has placed more than 300 orders.
--- Return customer_name, and aov (average order value)
+**Task 3: Order Value Analysis**: Find the average order value per customer who has placed more than 300 orders. Return customer_name, and aov (average order value)
 
 ```sql
 Select 
@@ -185,9 +181,7 @@ having Total_Orders >= 300;
 
 ```
 
-**Task 4: High-Value Customers**
--- Question: List the customers who have spent more than 140K in total on food orders.
--- return customer_name, and customer_id.
+**Task 4: High-Value Customers**: List the customers who have spent more than 140K in total on food orders. Return customer_name, and customer_id.
 
 ```sql
 Select 
@@ -203,9 +197,7 @@ having Total_Sum >= 140000;
 ```
 
 
-**Task 5: Orders Without Delivery**
--- Question: Write a query to find orders that were Completed but not delivered.
--- Return each restuarant name, city and number of not delivered orders.
+**Task 5: Orders Without Delivery**: Write a query to find orders that were Completed but not delivered. Return each restuarant name, city and number of not delivered orders.
 
 ```sql
 Select
@@ -224,8 +216,7 @@ AND (c.Delivery_status = "Not Delivered" OR c.Delivery_status  Is null)
 Group by 1,2;
 ```
 
-**Task 6: Restaurant Revenue Ranking**:
--- Rank restaurants by their total revenue in last 30 Months, including their name, total revenue, and rank within their city.
+**Task 6: Restaurant Revenue Ranking**: Rank restaurants by their total revenue in last 30 Months, including their name, total revenue, and rank within their city.
 
 ```sql
 With ranking_table
@@ -249,8 +240,7 @@ from ranking_table
 where rnk = 1;
 ```
 
-**Task 7: Most Popular Dishy by City**:
--- Identify the most popular dish in each city based on the number of orders.
+**Task 7: Most Popular Dishy by City**: Identify the most popular dish in each city based on the number of orders.
 
 ```sql
 Select * from 
@@ -269,8 +259,7 @@ group by 1,2
 where rnk = 1;
 ```
 
-**Task 8: Customer Churn**:
--- Question: Find Total No. Of Orders Done by Customers in 2023 And 2024.
+**Task 8: Customer Churn**: Find Total No. Of Orders Done by Customers in 2023 And 2024.
 
 ```sql
 SELECT 
@@ -291,8 +280,7 @@ from orders
     (Select customer_id from Orders where Year(order_date) = 2024);
 ```
 
-**Task 10: Cancellation Rate Comparison**:
--- Calculate and compare the order cancellation rate (where delivery ID is NULL) for each restaurant between the current year and the previous year.
+**Task 10: Cancellation Rate Comparison**: Calculate and compare the order cancellation rate (where delivery ID is NULL) for each restaurant between the current year and the previous year.
 
 ```sql
 SELECT
@@ -318,127 +306,201 @@ LEFT JOIN Deliveries b
 GROUP BY a.restaurant_id;
 ```
 
-**Task 11: Create a Table of Books with Rental Price Above a Certain Threshold 7USD**:
-```sql
-Create Table High_Rent_Books as
-select * from (Select * from Books where Rental_price > 7) as a;
-
-Select * from High_Rent_Books;
-```
-
-**Task 12: Retrieve the List of Books Not Yet Returned**
-```sql
-Select DISTINCT Issued_book_name from Issued_Status where issued_id not in (Select issued_id from Return_status);
-```
-
-## Advanced SQL Operations
-
-**Inserting Some New Values**
-```sql
-INSERT INTO issued_status(issued_id, issued_member_id, issued_book_name, issued_date, issued_book_isbn, issued_emp_id)
-VALUES ('IS151', 'C118', 'The Catcher in the Rye', CURRENT_DATE - INTERVAL 24 day,  '978-0-553-29698-2', 'E108'),
-('IS152', 'C119', 'The Catcher in the Rye', CURRENT_DATE - INTERVAL 13 day,  '978-0-553-29698-2', 'E109'),
-('IS153', 'C106', 'Pride and Prejudice', CURRENT_DATE - INTERVAL 7 day,  '978-0-14-143951-8', 'E107'),
-('IS154', 'C105', 'The Road', CURRENT_DATE - INTERVAL 32 day,  '978-0-375-50167-0', 'E101');
-```
-
-**Adding new column in return_status**
-```sql
-ALTER TABLE return_status
-ADD Column book_quality VARCHAR(15) DEFAULT('Good');
-
-UPDATE return_status
-SET book_quality = 'Damaged'
-WHERE issued_id 
-    IN ('IS112', 'IS117', 'IS118');
-SELECT * FROM return_status;
-```
-
-**Task 13: Identify Members with Overdue Books**  
-Write a query to identify members who have overdue books (assume a 30-day return period). Display the member's_id, member's name, book title, issue date, and days overdue.
-
+**Task 11: Rider Average Delivery Time**: Determine each rider's average delivery time.
 ```sql
 SELECT 
-    a.issued_member_id,
-    b.member_name,
-    c.book_title,
-    a.issued_date,
-    DATEDIFF(CURDATE(), a.issued_date) AS over_dues_days
-FROM issued_status AS a
-JOIN members AS b
-    ON b.member_id = a.issued_member_id
-JOIN books AS c
-    ON c.isbn = a.issued_book_isbn
-LEFT JOIN return_status AS d
-    ON d.issued_id = a.issued_id
-WHERE 
-    d.return_date IS NULL
-    AND DATEDIFF(CURDATE(), a.issued_date) > 30
-ORDER BY over_dues_days DESC;
+    b.rider_id,
+    SEC_TO_TIME(
+        ROUND(AVG(
+            CASE 
+                WHEN b.delivery_time >= c.order_time THEN
+                    TIME_TO_SEC(b.delivery_time) - TIME_TO_SEC(c.order_time)
+                ELSE
+                    TIME_TO_SEC(b.delivery_time) - TIME_TO_SEC(c.order_time) + 86400
+            END
+        ))
+    ) AS avg_delivery_time
+FROM Deliveries b
+JOIN Orders c 
+    ON b.order_id = c.order_id
+WHERE b.delivery_status = 'Delivered'
+GROUP BY b.rider_id;
 ```
 
-**Task 14: Branch Performance Report**  
-Create a query that generates a performance report for each branch, showing the number of books issued, the number of books returned, and the total revenue generated from book rentals.
-
+**Task 12: Monthly Restaurant Growth Ratio**: Calculate each restaurant's growth ratio based on the total number of delivered orders since its joining.
 ```sql
-Create Table Branch_Performance_Report As
-Select
-	a.Branch_id,
-    a.Manager_id,
-    Count(c.issued_id) as No_of_books_Issued,
-    Count(d.Return_id) as No_of_books_Retrned,
-    Sum(e.Rental_Price) as Total_Revenus_Generated
-from
-	Branch as a
-join
-	Employees as b
-		On a.Branch_id = b.Branch_id
-join
-	Issued_status as c
-		On b.emp_id = c.Issued_emp_id
-Left join
-	Return_status as d
-		On c.issued_id = d.Issued_id
-Join
-	Books as e
-		On c.Issued_book_isbn = e.isbn
-Group by 1,2;
-
-Select * from Branch_Performance_Report;
-```
-
-**Task 15: CTAS: Create a Table of Active Members**  
-Use the CREATE TABLE AS (CTAS) statement to create a new table active_members containing members who have issued at least one book in the last 2 months.
-
-```sql
-
-Create Table Active_Members as
-Select * from Members
-Where Member_id in
-	(Select Distinct issued_member_id as Members from Issued_status where Datediff(CurDate(),Issued_date) <= 60);
-
-Select * from Active_Members;
-
-```
-
-
-**Task 16: Find Employees with the Most Book Issues Processed**  
-Write a query to find the top 3 employees who have processed the most book issues. Display the employee name, number of books processed, and their branch.
-
-```sql
-Select
-            a.emp_name,
-            c.*,
-            Count(b.issued_id) as No_of_Books_Processed
+Select 
+	*,
+    Round((((Cnt-Last_month)/Last_Month) * 100),2) as Growth_Rate
 From
-	Employees as a
+(Select
+	a.Restaurant_id,
+    date_format(a.order_date,'%y-%m') as Order_Month,
+    Count(a.Order_id) as Cnt,
+    Lag(Count(a.Order_id)) over(partition by Restaurant_id order by date_format(a.order_date,'%y-%m')) as Last_Month
+From Orders as a
 Join
-	Issued_status as b
-		On a.emp_id = b.issued_emp_id
+Deliveries as b
+	On a.order_id = b.Order_id
+		Where Delivery_status = "Delivered"
+Group by 1,2) as X;
+```
+
+**Task 13: Customer Segmentation**: Customer Segmentation: Segment customers into 'Gold' or 'Silver' groups based on their total spending compared to the Overall average order value (AOV). If a customer's total spending exceeds the AOV, label them as 'Gold'; otherwise, label them as 'Silver'. Write an SQL query to determine each segment's total number of orders and total revenue
+
+```sql
+Select
+	*,
+    CASE
+		WHEN Total_revenue >= AOV THEN "Gold"
+        ELSE "Silver"
+	END as Segment
+from
+(Select
+	Customer_id,
+    Count(order_id) as No_Of_Orders,
+    Sum(total_amount) as Total_revenue,
+    (Select Sum(total_amount)/Count(Distinct Customer_id) from Orders) as AOV
+from Orders
+Group by 1) as X;
+```
+
+**Task 14: Rider Monthly Earnings**: Calculate each rider's total monthly earnings, assuming they earn 8% of the order amount.
+
+```sql
+Select
+	c.Rider_id,
+    date_format(a.order_date,'%y-%m') as Sales_Month,
+    (Sum(a.Total_amount)*0.08) as Earning
+From Orders a
 Join
-	Branch as c
-		On a.Branch_id = c.Branch_id
-Group by 1,2;
+Deliveries b
+	On a.order_id = b.order_id
+Join
+Riders c
+	On b.Rider_id = c.Rider_id
+		Where b.Delivery_status = "Delivered"
+Group by 1,2
+Order by 1,2;
+```
+
+**Task 15: Rider Ratings Analysis**: Find the number of 5-star, 4-star, and 3-star ratings each rider has. Riders receive this rating based on delivery time. If orders are delivered less than 120 minutes of order received time the rider get 5 star rating, if they deliver 120 and 300 minute they get 4 star rating, if they deliver after 300 minute they get 3 star rating.
+
+```sql
+Select
+	*,
+    Case
+		When Total_time < 120 then "5 Star"
+        When Total_time between 120 and 300 then "4 Star"
+        Else "3 Star"
+	End as Ratings
+from
+(Select
+	c.Rider_id,
+    a.order_id,
+    a.Order_time,
+    b.Delivery_time,
+    (
+		CASE
+			When b.Delivery_time >= a.Order_time
+				Then time_to_sec(b.Delivery_time) - time_to_sec(a.Order_time)
+			Else
+				time_to_sec(b.Delivery_time) - time_to_sec(a.Order_time) + 86400
+		End
+	) / 60 as Total_Time
+from Orders a
+Join
+Deliveries b
+	On a.order_id = b.Order_id
+Join
+Riders c
+	On b.Rider_id = c.Rider_id) as X;
+```
+
+
+**Task 16: Order Frequency by Day**: Analyze order frequency per day of the week and identify the peak day for each restaurant.
+
+```sql
+Select * from
+(Select
+	b.Restaurant_id,
+    dayname(a.order_date) as Week_Day,
+	Count(a.order_id) as CNT,
+    Rank() over(Partition by b.Restaurant_id order by Count(a.order_id) desc) as Rnk
+from Orders a
+Join
+Restaurants b
+	ON a.Restaurant_id = b.Restaurant_id
+Group by 1,2) as X
+Where Rnk = 1;
+```
+
+**Task 17: Customer Lifetime Value (CLV)**: Analyze order frequency per day of the week and identify the peak day for each restaurant.
+
+```sql
+Select * from
+(Select
+	b.Restaurant_id,
+    dayname(a.order_date) as Week_Day,
+	Count(a.order_id) as CNT,
+    Rank() over(Partition by b.Restaurant_id order by Count(a.order_id) desc) as Rnk
+from Orders a
+Join
+Restaurants b
+	ON a.Restaurant_id = b.Restaurant_id
+Group by 1,2) as X
+Where Rnk = 1;
+```
+
+**Task 18: Order Frequency by Day**: Analyze order frequency per day of the week and identify the peak day for each restaurant.
+
+```sql
+Select * from
+(Select
+	b.Restaurant_id,
+    dayname(a.order_date) as Week_Day,
+	Count(a.order_id) as CNT,
+    Rank() over(Partition by b.Restaurant_id order by Count(a.order_id) desc) as Rnk
+from Orders a
+Join
+Restaurants b
+	ON a.Restaurant_id = b.Restaurant_id
+Group by 1,2) as X
+Where Rnk = 1;
+```
+
+**Task 19: Order Frequency by Day**: Analyze order frequency per day of the week and identify the peak day for each restaurant.
+
+```sql
+Select * from
+(Select
+	b.Restaurant_id,
+    dayname(a.order_date) as Week_Day,
+	Count(a.order_id) as CNT,
+    Rank() over(Partition by b.Restaurant_id order by Count(a.order_id) desc) as Rnk
+from Orders a
+Join
+Restaurants b
+	ON a.Restaurant_id = b.Restaurant_id
+Group by 1,2) as X
+Where Rnk = 1;
+```
+
+**Task 20: Order Frequency by Day**: Analyze order frequency per day of the week and identify the peak day for each restaurant.
+
+```sql
+Select * from
+(Select
+	b.Restaurant_id,
+    dayname(a.order_date) as Week_Day,
+	Count(a.order_id) as CNT,
+    Rank() over(Partition by b.Restaurant_id order by Count(a.order_id) desc) as Rnk
+from Orders a
+Join
+Restaurants b
+	ON a.Restaurant_id = b.Restaurant_id
+Group by 1,2) as X
+Where Rnk = 1;
 ```
 
 ## Reports
