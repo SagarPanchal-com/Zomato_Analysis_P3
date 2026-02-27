@@ -15,7 +15,8 @@ This project demonstrates advanced SQL problem-solving skills through the analys
 ## Database Setup
 ![ERD](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato_ERD.png)
 
-- **Database Creation**: Created a database named `Zomato_db`.
+###Database Creation:
+Created a database named `Zomato_db`.
 
 ```sql
 Create Database Zomato_db;
