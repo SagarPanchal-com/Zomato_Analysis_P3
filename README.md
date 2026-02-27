@@ -15,14 +15,14 @@ This project demonstrates advanced SQL problem-solving skills through the analys
 ## Database Setup
 ![ERD](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato_ERD.png)
 
-- **Database Creation**:
+- **1. Database Creation**:
 Created a database named `Zomato_db`.
 
 ```sql
 Create Database Zomato_db;
 Use Zomato_db;
 ```
-- **1. Dropping Existing Tables**
+- **2. Dropping Existing Tables**
 
 ```sql
 DROP TABLE IF EXISTS Orders;
@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS Restaurants;
 DROP TABLE IF EXISTS Riders;
 DROP TABLE IF EXISTS Deliveries;
 ```
-- **2. Creating Tables**
+- **3. Creating Tables**
 
 ```sql
 -- Creating Customers Table
@@ -107,15 +107,15 @@ foreign key (rider_id)
 references Riders(rider_id);
 ```
 
-### Data Import
+## Data Import
 
-### Data Cleaning and Handling Null Values
+## Data Cleaning and Handling Null Values
 Before performing analysis, I ensured that the data was clean and free from null values where necessary. For instance:
 ```sql
 UPDATE orders
 SET total_amount = COALESCE(total_amount, 0);
 ```
-### Business Problems Solved
+## Business Problems Solved
 
 **Task 1: Write a query to find the top 5 most frequently ordered dishes by customer called "Arjun Mehta" in the last 2.5 year.**
 
