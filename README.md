@@ -2,6 +2,9 @@
 
 ## Project Overview
 
+**Project Title**: Data Analysis for Zomato  
+**Database**: `Zomato_db`
+
 This project demonstrates advanced SQL problem-solving skills through the analysis of data for a simulated food delivery company inspired by Zomato. The project includes database setup, data import, data cleaning, handling null values, and solving multiple business problems using optimized SQL queries. The primary objective is to extract actionable business insights related to customer behavior, restaurant performance, rider efficiency, and revenue trends.
 
 ![Library_project](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato-Logo.jpg)
