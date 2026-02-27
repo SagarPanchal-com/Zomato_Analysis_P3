@@ -12,7 +12,7 @@ This project demonstrates advanced SQL problem-solving skills through the analys
 **Data Cleaning**: Handling null values and ensuring data integrity.
 **Business Problems**: Solving 20 real-world business cases using SQL queries.
 
-### Database Setup
+## Database Setup
 ![ERD](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato_ERD.png)
 
 - **Database Creation**: Created a database named `Zomato_db`.
