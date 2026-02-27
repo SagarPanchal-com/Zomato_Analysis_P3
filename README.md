@@ -15,14 +15,14 @@ This project demonstrates advanced SQL problem-solving skills through the analys
 ## Database Setup
 ![ERD](https://github.com/SagarPanchal-com/Zomato_Analysis_P3/blob/main/Zomato_ERD.png)
 
-- **1. Database Creation**:
+**1. Database Creation**:
 Created a database named `Zomato_db`.
 
 ```sql
 Create Database Zomato_db;
 Use Zomato_db;
 ```
-- **2. Dropping Existing Tables**
+**2. Dropping Existing Tables**
 
 ```sql
 DROP TABLE IF EXISTS Orders;
@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS Restaurants;
 DROP TABLE IF EXISTS Riders;
 DROP TABLE IF EXISTS Deliveries;
 ```
-- **3. Creating Tables**
+**3. Creating Tables**
 
 ```sql
 -- Creating Customers Table
