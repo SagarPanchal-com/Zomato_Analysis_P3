@@ -130,8 +130,7 @@ Group by b.order_item) as X
 where Most_Ordered <= 5;
 ```
 
-**Task 2: Popular Time Slots**
--- Question: Identify the time slots during which the most orders are placed. based on 2-hour intervals.
+**Task 2: Popular Time Slots**: Identify the time slots during which the most orders are placed. based on 2-hour intervals.
 
 ***Approach 1***:
 ```sql
