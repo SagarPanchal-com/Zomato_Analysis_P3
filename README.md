@@ -22,7 +22,7 @@ Created a database named `Zomato_db`.
 Create Database Zomato_db;
 Use Zomato_db;
 ```
-**2. Dropping Existing Tables**
+**2. Dropping Existing Tables**:
 
 ```sql
 DROP TABLE IF EXISTS Orders;
@@ -31,7 +31,7 @@ DROP TABLE IF EXISTS Restaurants;
 DROP TABLE IF EXISTS Riders;
 DROP TABLE IF EXISTS Deliveries;
 ```
-**3. Creating Tables**
+**3. Creating Tables**:
 
 ```sql
 -- Creating Customers Table
@@ -164,7 +164,7 @@ group by 1,2
 order by 3 desc;
 ```
 
-**Task 3: Order Value Analysis**: Find the average order value per customer who has placed more than 300 orders. Return customer_name, and aov (average order value)
+**Task 3: Order Value Analysis**: Find the average order value per customer who has placed more than 300 orders. Return customer_name, and aov (average order value).
 
 ```sql
 Select 
@@ -346,7 +346,7 @@ Deliveries as b
 Group by 1,2) as X;
 ```
 
-**Task 13: Customer Segmentation**: Customer Segmentation: Segment customers into 'Gold' or 'Silver' groups based on their total spending compared to the Overall average order value (AOV). If a customer's total spending exceeds the AOV, label them as 'Gold'; otherwise, label them as 'Silver'. Write an SQL query to determine each segment's total number of orders and total revenue
+**Task 13: Customer Segmentation**: Customer Segmentation: Segment customers into 'Gold' or 'Silver' groups based on their total spending compared to the Overall average order value (AOV). If a customer's total spending exceeds the AOV, label them as 'Gold'; otherwise, label them as 'Silver'. Write an SQL query to determine each segment's total number of orders and total revenue.
 
 ```sql
 Select
@@ -481,7 +481,7 @@ Group by 1,2
 order by 1, 3 Desc;
 ```
 
-**Task 20: Rank each city based on the total revenue for last year 2023**
+**Task 20: Rank each city based on the total revenue for last year 2023**:
 
 ```sql
 Select
